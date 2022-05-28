@@ -18,6 +18,12 @@ namespace BE.Infrastructure.Bussiness
             return await _unitOfWork.SaveChangeAsync();
         }
 
+        public async Task<bool> AddUserRange(List<User> users)
+        {
+            await _unitOfWork.Repository<User>().AddRangeAsync(users);
+            return await _unitOfWork.SaveChangeAsync();
+        }
+
         public async Task DeleteUser(long id)
         {
             var entity = await _unitOfWork.Repository<User>().FirstOrDefaultAsync(x => x.Id == id);

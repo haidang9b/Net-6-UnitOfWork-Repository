@@ -9,5 +9,6 @@ namespace BE.Infrastructure.Contracts
         Task<bool> Adduser(User user);
         Task<bool> UpdateUser(User user);
         Task DeleteUser(long id);
+        Task<bool> AddUserRange(List<User> users);
     }
 }

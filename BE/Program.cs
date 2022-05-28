@@ -1,3 +1,4 @@
+using BE.Extensions;
 using BE.Infrastructure;
 using BE.Infrastructure.Bussiness;
 using BE.Infrastructure.Contracts;
@@ -8,25 +9,15 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultDatabase");
 
 // Add services to the container.
 builder.Services.AddRazorPages().AddNewtonsoftJson();
-RegisterServices(builder.Services);
+builder.Services.AddApplicationService(builder.Configuration);
+builder.Services.RegisterServices();
 builder.Services.AddCors();
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
-builder.Services.AddSwaggerGen();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Version = "v1",
-        Title = "Clothing Store API",
-        Description = "Backend API for Clothing Store project",
-
-    });
-});
+builder.Services.AddSwaggerServices();
 
 
 var app = builder.Build();
@@ -59,13 +50,3 @@ app.UseEndpoints(endpoints =>
     endpoints.MapRazorPages();
 });
 app.Run();
-
-void RegisterServices(IServiceCollection services)
-{
-    services.AddDbContext<EFContext>(options =>
-    options.UseSqlServer(connectionString));
-    services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-    services.AddScoped(typeof(IDatabaseFactory<>), typeof(DatabaseFactory<>));
-    services.AddScoped<IUserService, UserService>();
-    services.AddScoped<IUnitOfWork, UnitOfWork>();
-}

@@ -74,6 +74,24 @@ namespace BE.Controllers
             return Ok(result);
         }
 
+        [HttpPost("add-range")]
+        public async Task<ActionResult<ApiResult>> Post([FromBody] List<User> value)
+        {
+            var result = new ApiResult();
+            try
+            {
+                result.Data = await _userService.AddUserRange(value);
+                result.Message = "Add users is successfully";
+                result.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                result.InternalError();
+                result.Message = ex.Message;
+            }
+            return Ok(result);
+        }
+
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResult>> Put(long id, [FromBody] User value)

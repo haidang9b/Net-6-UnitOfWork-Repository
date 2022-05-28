@@ -15,6 +15,7 @@ namespace BE.Infrastructure
         {
 
         }
+
         public DbSet<User> users { get; set; }
     }
 }
